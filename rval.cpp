@@ -219,51 +219,51 @@ void fwd(Ts&&... args) {
 }
 
 int main() {
-  // int && r = 2;
-  // std::cout << &r << std::endl;
-  // int lval = 10;
-  // r_func(2);
+  int && r = 2;
+  std::cout << &r << std::endl;
+  int lval = 10;
+  r_func(2);
 
-  // Widget w;
-  // logAndProcess(w); // trigger lvalue process
-  // logAndProcess(std::move(w)); // trigger rvalue process
+  Widget w;
+  logAndProcess(w); // trigger lvalue process
+  logAndProcess(std::move(w)); // trigger rvalue process
 
-  // w.set_name("I am Ian");
-  // std::string ls("I am Ian");
-  // w.set_name(ls);
+  w.set_name("I am Ian");
+  std::string ls("I am Ian");
+  w.set_name(ls);
 
-  // /**
-  //  * Item 25: use std::move on rvalue reference and std::forward on universal reference (whether its a lvaue or a rvalue operation the std::forward
-  //  * could determined)
-  //  * 
-  //  * never apply std::move or std::forward on local object return since it preclude the Return Value Optimiziation (RVO)
-  // */
-  // Widget w2;
-  // auto w3 = makeWidget();
-  // set_widget(std::move(w2));
-  // set_widget(w3);
+  /**
+   * Item 25: use std::move on rvalue reference and std::forward on universal reference (whether its a lvaue or a rvalue operation the std::forward
+   * could determined)
+   * 
+   * never apply std::move or std::forward on local object return since it preclude the Return Value Optimiziation (RVO)
+  */
+  Widget w2;
+  auto w3 = makeWidget();
+  set_widget(std::move(w2));
+  set_widget(w3);
 
-  // /**
-  //  * Do not write overloading on universal reference
-  // */
-  // short idx = 0;
-  // // log_name(idx);
+  /**
+   * Do not write overloading on universal reference
+  */
+  short idx = 0;
+  // log_name(idx);
 
-  // std::string name = "Ian";
-  // log_name_correct(name); // should call non-integral version
-  // log_name_correct(idx); // should call integral version
+  std::string name = "Ian";
+  log_name_correct(name); // should call non-integral version
+  log_name_correct(idx); // should call integral version
 
   // illustration to why we need virtual destructor but not the constructor
   // Widget * wptr = new AwesomeWidget();
   // delete wptr;
 
-  // AwesomeWidget aw("Ian", "Awesome");
-  // AwesomeWidget aw2 = aw;
-  // std::cout << aw2.supername << aw2.name << std::endl;
-  // std::cout << aw.supername << aw.name << std::endl;
+  AwesomeWidget aw("Ian", "Awesome");
+  AwesomeWidget aw2 = aw;
+  std::cout << aw2.supername << aw2.name << std::endl;
+  std::cout << aw.supername << aw.name << std::endl;
 
-  // int idx = 10;
-  // Widget aw3(idx);
+  int idx = 10;
+  Widget aw3(idx);
 
   /**
    * Item 28: understand reference collapse
@@ -278,14 +278,14 @@ int main() {
    * see the above example to understand more
   */
 
-  // auto && aw_lref = aw3; // since pass in lval, so it expand to (Widget&) && aw_lref = aw3;
-  // auto && aw_rref = Widget(); // pass in rval, so it expand to (Widget) && aw_rref
+  auto && aw_lref = aw3; // since pass in lval, so it expand to (Widget&) && aw_lref = aw3;
+  auto && aw_rref = Widget(); // pass in rval, so it expand to (Widget) && aw_rref
 
-  // int && a = 10;
-  // int c = 100;
-  // c = std::move(a);
+  int && a = 10;
+  int c = 100;
+  c = std::move(a);
 
-  // std::cout << c << ", " << a << std::endl;
+  std::cout << c << ", " << a << std::endl;
 
   /**
    * Item 29: assume move operation are not present, not cheap, not use
