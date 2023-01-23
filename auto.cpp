@@ -24,7 +24,7 @@ void process(bool priority) {
 int main() {
   /**
    * the key difference between using std::function and auto (and why auto is better)
-   * auto just the as many memory as the closure need; however, the std::function would use more than that (closure itseld + the class of std::function)
+   * auto just the as many memory as the closure need; however, the std::function would use more than that (closure itself + the class of std::function)
   */
   std::function<bool (int, int)> fn_function = [](int a, int b) { return a < b; };
   auto fn_auto = [](int a, int b) { return a < b; };
