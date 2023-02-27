@@ -4,6 +4,15 @@
 
 using namespace std::literals;
 
+class A {
+  public:
+  A() = default;
+  // explicit A(const A & rhs) {
+  //   // not allowed
+  // }
+  A(const A & rhs) {}
+};
+
 bool isPrime(int x) {
     std::cout << "Calculating. Please, wait...\n";
     for (int i=2; i<x; ++i) if (x%i==0) return false;
@@ -12,7 +21,7 @@ bool isPrime(int x) {
 
 void sleep_func() {
   std::cout << "sleep task is called" << std::endl;
-    std::this_thread::sleep_for(1s);
+  std::this_thread::sleep_for(1s);
 }
 
 int f() {
@@ -131,10 +140,10 @@ int main() {
    * 3. need to implement threading technology beyond the C++ concurrency API, e.g., thread pools on platforms where your C++ implementations don’t offer them.
   */
 
-  // std::future<bool> func_task = std::async(std::launch::deferred, isPrime,313222313);
-  // bool ret = func_task.get(); // the passed in function would only run if future object get is called
+  std::future<bool> func_task = std::async(std::launch::deferred, isPrime,313222313);
+  bool ret = func_task.get(); // the passed in function would only run if future object get is called
 
-  // auto func_async = std::async(std::launch::async, isPrime, 313222313);
+  auto func_async = std::async(std::launch::async, isPrime, 313222313);
 
   /**
    * Item 36: Specify std::launch::async if asynchronous execution is necessary
@@ -144,14 +153,14 @@ int main() {
    * 
    * This would lead to infinte loop in wait loop
   */
-  // auto sleep_task = std::async(sleep_func); // the launch policy is not sure, it might be std::launch::deferred if there is huge amount of thread created
-  // while (sleep_task.wait_for(100ms) != std::future_status::ready) {
-  //   // do stuff
-  // }
+  auto sleep_task = std::async(sleep_func); // the launch policy is not sure, it might be std::launch::deferred if there is huge amount of thread created
+  while (sleep_task.wait_for(100ms) != std::future_status::ready) {
+    // do stuff
+  }
 
 
-  // f();
-  // while (1) {}
+  f();
+  while (1) {}
 
   /**
    * Item 37: RAII thread class
@@ -163,7 +172,7 @@ int main() {
    * 
    * joinable thread object would thread exception if the thread is not joined when it is out of scope
    * the design for this is becuase:
-   * 1. implicit join would lead to some performance downgrade, and threre might be a hanging problem (solution is to write a interruptible thread)
+   * 1. implicit join would lead to some performance downgrade, and there might be a hanging problem (solution is to write a interruptible thread)
    * 2. implicit detached would have detached thread write to out of scope function's frame memory (hard to debug code)
    * 
    * see above RAII thread for better way to handle the problem
@@ -192,21 +201,21 @@ int main() {
   * 1. notifying thread notify before waiting thread wait, this would cause the waiting thread to be hang
   * 2. spurious wakeup, e.g. by scheduler
  */
-  // auto wait_task = std::async(wait_func);
-  // notify_func();
+  auto wait_task = std::async(wait_func);
+  notify_func();
 
-  // // below are improveed approach
-  // try {
-  //   test_main_code();
-  // } catch (std::exception & e) {
-  //   std::cout << "exception caught" << std::endl;
-  // }
+  // below are improveed approach
+  try {
+    test_main_code();
+  } catch (std::exception & e) {
+    std::cout << "exception caught" << std::endl;
+  }
 
-  // try {
-  //   test_thread_raii_code();
-  // } catch (std::exception & e) {
-  //   std::cout << e.what() << std::endl;
-  // }
+  try {
+    test_thread_raii_code();
+  } catch (std::exception & e) {
+    std::cout << e.what() << std::endl;
+  }
 
   std::vector<std::thread> t_vec;
 
@@ -234,4 +243,7 @@ int main() {
 
   x = 10;
   x = 20;
+
+  A a;
+  A ab = a;
 }

@@ -62,6 +62,7 @@
     "algorithm": "cpp",
     "list": "cpp",
     "future": "cpp",
-    "thread": "cpp"
+    "thread": "cpp",
+    "condition_variable": "cpp"
   }
 }
