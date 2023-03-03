@@ -89,21 +89,21 @@ int main() {
    *  4. it could have self-define deleted ptr
    *  5. it should be as big as raw ptr, when it is not should reconsider the design (this usually occur self-defined delete function, it would better to use lamba expression)
   */
-  // std::unique_ptr<int> p(new int(10));
-  // std::unique_ptr<int> p2(std::move(p));
+  std::unique_ptr<int> p(new int(10));
+  std::unique_ptr<int> p2(std::move(p));
 
-  // std::cout << *p2 << std::endl;
+  std::cout << *p2 << std::endl;
 
-  // std::unique_ptr<int[]> p_arr(new int[10]);
-  // std::cout << p_arr[3] << std::endl;
+  std::unique_ptr<int[]> p_arr(new int[10]);
+  std::cout << p_arr[3] << std::endl;
 
-  // auto customDel = [](Investmest * p) {
-  //   makeLog(p);
-  //   delete p;
-  // };
+  auto customDel = [](Investmest * p) {
+    makeLog(p);
+    delete p;
+  };
 
-  // std::unique_ptr<Investmest, decltype(customDel)> iv(new Investmest(), customDel);
-  // iv.reset(new Investmest());
+  std::unique_ptr<Investmest, decltype(customDel)> iv(new Investmest(), customDel);
+  iv.reset(new Investmest());
 
   // std::cout << iv->id << std::endl;
 
@@ -113,27 +113,27 @@ int main() {
    * never created shared_ptr from raw_ptr
   */
 
-//  std::shared_ptr<Investmest> sp(new Investmest());
-//  std::shared_ptr<Investmest> sp2(new Investmest());
+ std::shared_ptr<Investmest> sp(new Investmest());
+ std::shared_ptr<Investmest> sp2(new Investmest());
 
-//  sp = sp2;
+ sp = sp2;
 
-//  std::shared_ptr<Investmest> sp3;
-//  sp3 = std::move(sp2);
+ std::shared_ptr<Investmest> sp3;
+ sp3 = std::move(sp2);
 
-//  bc bc1;
-// //  bc1.process();
-//   std::shared_ptr<sc> sc1(new sc());
-//   sc1->process();
+ bc bc1;
+//  bc1.process();
+  std::shared_ptr<sc> sc1(new sc());
+  sc1->process();
 
-//   std::cout << "end of code" << std::endl;
+  std::cout << "end of code" << std::endl;
 
-//   // custom deleter diff from shared_ptr
-//   auto custom_del = [](Investmest * p) {
-//     // some custom ops
-//     delete p;
-//   };
-//   std::shared_ptr<Investmest> sp4(new Investmest(), custom_del);
+  // custom deleter diff from shared_ptr
+  auto custom_del = [](Investmest * p) {
+    // some custom ops
+    delete p;
+  };
+  std::shared_ptr<Investmest> sp4(new Investmest(), custom_del);
 
   /**
    * Item 20: weak ptr

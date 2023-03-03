@@ -63,6 +63,8 @@
     "list": "cpp",
     "future": "cpp",
     "thread": "cpp",
-    "condition_variable": "cpp"
+    "condition_variable": "cpp",
+    "iomanip": "cpp",
+    "unordered_set": "cpp"
   }
 }
